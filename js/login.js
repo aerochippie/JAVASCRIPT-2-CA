@@ -3,8 +3,8 @@
 const baseUrl = 'https://nf-api.onrender.com/api/v1'
 const loginUrl = baseUrl + '/social/auth/login'
 
+export async function loginUser(url, userData) {
 
-async function loginUser(url, userData) {
     try {
         const data = {
             method: "POST",
@@ -14,15 +14,17 @@ async function loginUser(url, userData) {
             body: JSON.stringify(userData),
 
         };
+
         const response = await fetch(url, data)
-        console.log(response);
         const json = await response.json();
-        console.log(json);
-        //console.log(userData)
+
         const bearerToken = json.accessToken;
-        console.log(bearerToken)
-        localStorage.setItem("bearerToken", bearerToken)
-        if (response.status === 200) { window.location = "../home.html" }
+        const getName = json.name;
+        
+        if (response.status === 200) { 
+            window.localStorage.setItem("bearerToken", bearerToken);
+            window.localStorage.setItem("username", getName);
+            window.location = "../home.html" }
         if (response.status === 401){
             window.alert("Email/Password combination is wrong, try again")
         }
@@ -30,7 +32,9 @@ async function loginUser(url, userData) {
     catch (error) {
         console.log(error);
     }
+ 
 };
+
 
 
 function validateForm(e) {

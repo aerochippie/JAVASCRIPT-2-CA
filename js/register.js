@@ -48,18 +48,13 @@ function validateForm(e) {
         passwordError.innerHTML = "";
     }
 
-
     const newUserData = {
         name: username,
         email: email,
         password: password
     };
-
-    console.log(newUserData)
     newUser(regUrl, newUserData);
 }
-
-
 
 
 async function newUser(url, userData) {
@@ -73,16 +68,12 @@ async function newUser(url, userData) {
 
         };
         const response = await fetch(url, data)
-        //console.log(response);
         const json = await response.json();
-        //console.log(json);
-        //console.log(userData)
-        if (response.status === 201) { window.location = "../index.html" }
-    }
+        if (response.status === 201) { window.location = "../index.html" }}
+
     catch (error) {
         console.log(error);
-    }
-};
+    }};
 
 
 const registerButton = document.getElementById('registerButton');

@@ -10771,5 +10771,8 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.card-img-top {
+  width: 50%;
+}
 
 /*# sourceMappingURL=style.css.map */
