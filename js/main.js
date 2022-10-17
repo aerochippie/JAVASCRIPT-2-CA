@@ -76,7 +76,7 @@ async function renderPosts(url, opt) {
 
                 <div class="card-body" data-id=${post.id}>
 
-                <a href="./specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5></a>
+                <a href="specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5> </a>
                   <p class="card-text">  ${post.body}.</p>
                   <button class="btn btn-primary" id="edit-button">Edit</button>
                   <button class="btn btn-primary" id="delete-button">Delete</button>
@@ -183,7 +183,6 @@ function openForm() {
 
 profilePosts.addEventListener('click', (e) => {
 
-    e.preventDefault();
     let postId = e.target.parentElement.dataset.id
     let postUrl = `${baseUrl}/social/posts/${postId}`
 
