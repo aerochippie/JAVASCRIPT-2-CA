@@ -10,7 +10,7 @@ const accessToken = localStorage.getItem('bearerToken')
 
 const baseUrl = 'https://nf-api.onrender.com/api/v1'
 const getProfileUrl = `${baseUrl}/social/profiles/${userName}`;
-const getProfilePosts = `${baseUrl}/social/profiles/${userName}?_posts=true`;
+const getProfilePostsUrl = `${baseUrl}/social/profiles/${userName}?_posts=true`;
 const createPostUrl = `${baseUrl}/social/posts`;
 
 const profileCard = document.getElementById(`profile-card`)
@@ -29,16 +29,23 @@ async function renderProfile(url, opt) {
 
     const response = await fetch(url, opt);
     const data = await response.json();
+    console.log(data)
 
-    if (data.avatar === "") {
+    if (data.avatar === null) {
         profileCard.innerHTML +=
-            `<div class="card">
-            <div class="card-body">
-            <h5 class="card-title">${data.name}</h5>
-            <p class="card-text"> Follwers: ${data._count.followers} Following: ${data._count.following}.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-            </div>`
+            `
+        <div class="row no-gutters m-auto">
+        <div class="col-md-4">
+        <img class="card-img-top" src="https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fphotos%2Fimages%2Fnewsfeed%2F002%2F205%2F309%2F1d3.jpg" alt="Card image cap">
+        </div>
+        <div class="col-md-8" style="align-self: center;"">
+        <div class="card-body">
+        <h5 class="card-title"> Hello ${data.name}!</h5>
+        <p class="card-text"> You have shared: ${data._count.posts} posts! </br> 
+    
+        <p class="card-text"> Followers: ${data._count.followers} </br> Following: ${data._count.following}.</p>
+        </div></div>
+        </div></div>`
     } else {
         profileCard.innerHTML +=
             `<div class="card">
@@ -46,7 +53,6 @@ async function renderProfile(url, opt) {
             <div class="card-body">
             <h5 class="card-title">${data.name}</h5>
             <p class="card-text"> Follwers: ${data._count.followers} Following: ${data._count.following}.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
             </div>` }
 }
@@ -57,32 +63,34 @@ async function renderPosts(url, opt) {
     console.log(data)
 
     data.posts.forEach(post => {
-        if (post.media === '') {
+        if (post.media === null) {
             profilePosts.innerHTML += `
-        <div class="card">
+            <div class="col-sm-3 p-3">
+        <div class="card  text-white bg-dark h-50">
         <div class="card-body" data-id=${post.id}>
-        <a href="./specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5></a>
+        <a class="text-white" href="./specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5></a>
           <p class="card-text">  ${post.body}.</p>
 
-          <button class="btn btn-primary" id="edit-button">Edit</button>
-        <button class="btn btn-primary" id="delete-button">Delete</button>
+          <button class="btn btn-info" id="edit-button">Edit</button>
+        <button class="btn btn-danger" id="delete-button">Delete</button>
         </div>
-    </div>`
+    </div></div>`
         } else {
             profilePosts.innerHTML += `
-                <div class="card">
+            <div class="col-sm-3 p-3">
+                <div class="card  text-white bg-dark h-100">
 
                 <img class="card-img-top" src="${post.media}" alt="Card image cap">
 
                 <div class="card-body" data-id=${post.id}>
 
-                <a href="specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5> </a>
+                <a class="text-white" href="specificpost.html?id=${post.id}"><h5 class="card-title">${post.title}</h5> </a>
                   <p class="card-text">  ${post.body}.</p>
-                  <button class="btn btn-primary" id="edit-button">Edit</button>
-                  <button class="btn btn-primary" id="delete-button">Delete</button>
+                  <button class="btn btn-info" id="edit-button">Edit</button>
+                  <button class="btn btn-danger" id="delete-button">Delete</button>
 
                 </div>
-            </div>`
+            </div></div>`
         }
     })
 
@@ -177,7 +185,12 @@ async function editPost(url, postdata) {
 };
 
 function openForm() {
-    document.getElementById("popup-form").style.display = "block";
+    document.getElementById("popupcontainer").style.display = "block";
+
+}
+
+function closeForm() {
+    document.getElementById("popupcontainer").style.display = "none";
 
 }
 
@@ -219,6 +232,7 @@ popUpForm.addEventListener('click', (e) => {
 
     let postDetailsUrl = `${baseUrl}/social/posts/${formPostId}`
     let savePressed = e.target.id == 'save-post-button';
+    let cancelPressed = e.target.id == 'cancel-edit-post-button';
 
     let newData = {
         title: postTitle.value,
@@ -229,11 +243,13 @@ popUpForm.addEventListener('click', (e) => {
     if (savePressed) {
         editPost(postDetailsUrl, newData);
     }
+    if(cancelPressed){
+        closeForm()
+    }
 })
 
 
 
-
 renderProfile(getProfileUrl, options);
-renderPosts(getProfilePosts, options);
+renderPosts(getProfilePostsUrl, options);
 newPostButton.addEventListener('click', validatePost)

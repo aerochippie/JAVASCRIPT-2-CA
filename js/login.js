@@ -74,4 +74,9 @@ function validateForm(e) {
 }
 
 const loginButton = document.getElementById('loginButton');
+const onEnter = document.getElementById('passwordGet');
 loginButton.addEventListener('click', validateForm);
+
+window.addEventListener('keydown', (e) =>{ if(e.key === 'Enter'){
+       validateForm(e)
+    }})

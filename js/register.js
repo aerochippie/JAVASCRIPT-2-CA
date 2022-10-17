@@ -78,4 +78,5 @@ async function newUser(url, userData) {
 
 const registerButton = document.getElementById('registerButton');
 registerButton.addEventListener('click', validateForm);
+// 
 
