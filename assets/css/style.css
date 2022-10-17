@@ -10771,5 +10771,12 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.card-img-top {
+  width: 50%;
+}
+
+#popup-form {
+  display: none;
+}
 
 /*# sourceMappingURL=style.css.map */
