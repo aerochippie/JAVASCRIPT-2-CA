@@ -248,6 +248,17 @@ popUpForm.addEventListener('click', (e) => {
     }
 })
 
+const logOutButton = document.getElementById('logoutcontainer');
+
+logOutButton.addEventListener('click', (e) => {
+            let logoutPressed = e.target.id === 'logout';
+            if(logoutPressed){
+                localStorage.removeItem("bearerToken")
+                localStorage.removeItem("username")
+                window.location = "../index.html"
+            }
+})
+
 
 
 renderProfile(getProfileUrl, options);
